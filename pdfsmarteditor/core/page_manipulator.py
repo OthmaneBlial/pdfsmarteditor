@@ -1,5 +1,7 @@
 import fitz
+
 from .exceptions import InvalidOperationError
+
 
 class PageManipulator:
     def __init__(self, document):
@@ -9,7 +11,9 @@ class PageManipulator:
 
     def insert_page(self, page_num: int, width: float = 595, height: float = 842):
         if page_num < 0 or page_num > len(self.document):
-            raise InvalidOperationError(f"Invalid page number for insertion: {page_num}")
+            raise InvalidOperationError(
+                f"Invalid page number for insertion: {page_num}"
+            )
         self.document.insert_page(page_num, width=width, height=height)
 
     def delete_page(self, page_num: int):

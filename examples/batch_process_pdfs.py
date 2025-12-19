@@ -10,8 +10,8 @@ This script shows how to:
 """
 
 import os
-import sys
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -51,7 +51,9 @@ def batch_extract_text(input_dir, output_dir):
         else:
             print(f"  ✗ Failed: {stderr}")
 
-    print(f"\nBatch processing complete: {success_count}/{len(pdf_files)} files processed successfully")
+    print(
+        f"\nBatch processing complete: {success_count}/{len(pdf_files)} files processed successfully"
+    )
 
 
 def batch_extract_images(input_dir, output_dir):

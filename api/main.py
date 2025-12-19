@@ -1,10 +1,11 @@
-import uvicorn
 import logging
+
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import documents, tools
 from api.deps import cleanup_stale_sessions
+from api.routes import documents, tools
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -26,10 +27,12 @@ app.add_middleware(
 app.include_router(documents.router)
 app.include_router(tools.router)
 
+
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting up PDF Smart Editor API...")
     cleanup_stale_sessions()
+
 
 if __name__ == "__main__":
     uvicorn.run("api.main:app", host="0.0.0.0", port=8000, reload=True)

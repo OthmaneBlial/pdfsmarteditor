@@ -1,9 +1,20 @@
-import pytest
-import tempfile
 import os
-from pdfsmarteditor.utils.validators import validate_pdf, validate_image
-from pdfsmarteditor.utils.pdf_helpers import get_pdf_version, get_page_count, get_page_dimensions, get_metadata
-from pdfsmarteditor.utils.image_utils import resize_image, convert_format, get_image_size
+import tempfile
+
+import pytest
+
+from pdfsmarteditor.utils.image_utils import (
+    convert_format,
+    get_image_size,
+    resize_image,
+)
+from pdfsmarteditor.utils.pdf_helpers import (
+    get_metadata,
+    get_page_count,
+    get_page_dimensions,
+    get_pdf_version,
+)
+from pdfsmarteditor.utils.validators import validate_image, validate_pdf
 
 
 class TestValidators:
@@ -14,7 +25,7 @@ class TestValidators:
         assert validate_pdf("nonexistent.pdf") is False
 
     def test_validate_pdf_invalid_file(self):
-        with tempfile.NamedTemporaryFile(suffix='.txt', delete=False) as tmp:
+        with tempfile.NamedTemporaryFile(suffix=".txt", delete=False) as tmp:
             tmp.write(b"Not a PDF")
             tmp.flush()
             assert validate_pdf(tmp.name) is False
@@ -27,7 +38,7 @@ class TestValidators:
         assert validate_image("nonexistent.png") is False
 
     def test_validate_image_invalid_file(self):
-        with tempfile.NamedTemporaryFile(suffix='.txt', delete=False) as tmp:
+        with tempfile.NamedTemporaryFile(suffix=".txt", delete=False) as tmp:
             tmp.write(b"Not an image")
             tmp.flush()
             assert validate_image(tmp.name) is False
@@ -66,7 +77,7 @@ class TestPDFHelpers:
 
 class TestImageUtils:
     def test_resize_image(self, sample_image_path):
-        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
             resize_image(sample_image_path, tmp.name, 50, 50)
             assert os.path.exists(tmp.name)
             width, height = get_image_size(tmp.name)
@@ -75,8 +86,8 @@ class TestImageUtils:
             os.unlink(tmp.name)
 
     def test_convert_format(self, sample_image_path):
-        with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp:
-            convert_format(sample_image_path, tmp.name, 'JPEG')
+        with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
+            convert_format(sample_image_path, tmp.name, "JPEG")
             assert os.path.exists(tmp.name)
             os.unlink(tmp.name)
 

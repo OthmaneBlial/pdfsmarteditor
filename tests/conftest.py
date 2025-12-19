@@ -2,16 +2,16 @@ import os
 import uuid
 from typing import Iterator
 
+import docx
 import fitz
 import pandas as pd
-import docx
 import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 from pptx import Presentation
 
-from api.main import app
 from api.deps import TEMP_DIR
+from api.main import app
 
 
 def _build_pdf(path: str, pages: int = 1) -> str:

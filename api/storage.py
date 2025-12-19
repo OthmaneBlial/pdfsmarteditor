@@ -4,7 +4,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-
 STORAGE_DIR = Path(__file__).resolve().parent.parent / "storage"
 STORAGE_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = STORAGE_DIR / "sessions.db"

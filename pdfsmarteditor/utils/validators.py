@@ -1,6 +1,7 @@
 import os
-from PIL import Image
+
 import fitz
+from PIL import Image
 
 
 def validate_pdf(file_path: str) -> bool:
@@ -18,7 +19,7 @@ def validate_pdf(file_path: str) -> bool:
     try:
         doc = fitz.open(file_path)
         # Check if it has PDF format in metadata
-        if 'format' in doc.metadata and doc.metadata['format'].startswith('PDF'):
+        if "format" in doc.metadata and doc.metadata["format"].startswith("PDF"):
             doc.close()
             return True
         doc.close()

@@ -34,6 +34,7 @@ jobs:
 
     - name: Run tests
       run: |
+        export PYTHONPATH=$PYTHONPATH:.
         pytest --cov=pdfsmarteditor --cov-report=xml
 
     - name: Upload coverage to Codecov
@@ -70,8 +71,8 @@ jobs:
 
     - name: Check formatting
       run: |
-        black --check pdfsmarteditor
-        isort --check-only pdfsmarteditor
+        black --check .
+        isort --check-only .
 
     - name: Type checking
       run: |

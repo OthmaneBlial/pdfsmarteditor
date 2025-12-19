@@ -1,10 +1,15 @@
-import fitz
 from typing import Any
-from .exceptions import InvalidOperationError
+
+import fitz
+
 from ..utils.canvas_helpers import (
-    parse_canvas_json, validate_canvas_object, scale_coordinates,
-    convert_to_pymupdf_annotation
+    convert_to_pymupdf_annotation,
+    parse_canvas_json,
+    scale_coordinates,
+    validate_canvas_object,
 )
+from .exceptions import InvalidOperationError
+
 
 class Editor:
     def __init__(self, document):
@@ -31,7 +36,9 @@ class Editor:
         page = self.document[page_num]
         page.insert_image(rect, filename=image_path)
 
-    def add_annotation(self, page_num: int, annot_type: str, rect: fitz.Rect, contents: str = ""):
+    def add_annotation(
+        self, page_num: int, annot_type: str, rect: fitz.Rect, contents: str = ""
+    ):
         if page_num < 0 or page_num >= len(self.document):
             raise InvalidOperationError(f"Invalid page number: {page_num}")
         page = self.document[page_num]
@@ -78,7 +85,9 @@ class Editor:
         page = self.document[page_num]
         page.add_ink_annot(points)
 
-    def add_canvas_annotations(self, page_num: int, canvas_data: Any, canvas_zoom: float = 2.0):
+    def add_canvas_annotations(
+        self, page_num: int, canvas_data: Any, canvas_zoom: float = 2.0
+    ):
         """
         Add canvas annotations to a PDF page.
 

@@ -1,6 +1,8 @@
 import fitz
-from .exceptions import PDFLoadError, PDFSaveError, InvalidOperationError
+
 from ..utils.pdf_helpers import check_pdf_compatibility
+from .exceptions import InvalidOperationError, PDFLoadError, PDFSaveError
+
 
 class DocumentManager:
     def __init__(self):

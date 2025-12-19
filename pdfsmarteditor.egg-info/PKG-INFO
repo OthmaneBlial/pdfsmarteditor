@@ -1,0 +1,120 @@
+Metadata-Version: 2.4
+Name: pdfsmarteditor
+Version: 0.1.0
+Summary: A smart PDF editor with CLI and API capabilities
+Author: Othmane BLIAL
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/OthmaneBlial/pdfsmarteditor
+Project-URL: Repository, https://github.com/OthmaneBlial/pdfsmarteditor
+Project-URL: Issues, https://github.com/OthmaneBlial/pdfsmarteditor/issues
+Keywords: pdf,editor,pymupdf,cli,pdf-manipulation,api
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Multimedia :: Graphics :: Editors
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PyMuPDF
+Requires-Dist: Pillow
+Requires-Dist: typer
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: python-multipart
+Requires-Dist: pdf2docx
+Requires-Dist: python-pptx
+Requires-Dist: pdfplumber
+Requires-Dist: pandas
+Requires-Dist: openpyxl
+Requires-Dist: pytesseract
+Requires-Dist: python-dotenv
+Requires-Dist: typing_extensions
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: httpx; extra == "dev"
+Dynamic: license-file
+
+# <p align="center"><img src="./logo-pdf-editor.png" alt="PDF Smart Editor Logo" width="200"></p>
+
+<h1 align="center">PDF Smart Editor</h1>
+
+<p align="center">
+  <strong>100% Free. 100% Local. 100% Private.</strong><br>
+  The powerful, professional-grade PDF editor that lives on your machine, not the cloud.
+</p>
+
+---
+
+Stop paying for basic PDF tools. **PDF Smart Editor** is a feature-rich, open-source alternative to expensive, paywalled PDF platforms. Unlike online editors, your files never leave your computer, ensuring total privacy and security for your sensitive documents.
+
+## Why PDF Smart Editor?
+
+*   **🚫 No Paywalls**: Access every tool for free. Forever.
+*   **🔒 100% Privacy**: All processing happens locally. No cloud uploads.
+*   **⚡ High Performance**: Powered by PyMuPDF for lightning-fast edits.
+*   **🎨 Pro UI**: A modern, sleek React interface that makes editing easy.
+
+## Core Features
+
+### 🛠️ Professional Toolbar
+*   **Annotate & Edit**: Add text, images, and drawings with a high-performance canvas (Fabric.js).
+*   **Metadata Mastery**: View and edit title, author, and keywords effortlessly.
+*   **Page Control**: Rotate, delete, and reorder pages with a visual grid.
+
+### 🔄 Advanced Conversion
+*   **Export To**: Word (`.docx`), PowerPoint (`.pptx`), Excel (`.xlsx`), and High-Res Images.
+*   **Import From**: Office documents, HTML, and Scans directly to PDF.
+
+### 🧠 Smart Tools
+*   **OCR Integration**: Extract text from scanned documents locally.
+*   **Security**: Password protect or unlock PDFs with ease.
+*   **Manipulation**: Merge, split, compress, and watermark in seconds.
+
+## Quick Start
+
+### Installation
+
+Install PDF Smart Editor using pip:
+
+```bash
+pip install pdfsmarteditor
+```
+
+### Run the App
+
+Launch the full-featured web editor:
+
+```bash
+pdfsmarteditor serve
+```
+Then visit `http://localhost:8000` to start editing.
+
+### CLI Power
+
+```bash
+# Merge documents
+pdfsmarteditor tools merge doc1.pdf doc2.pdf -o combined.pdf
+
+# Convert to Word
+pdfsmarteditor tools convert input.pdf -f docx
+```
+
+## Developers & Contributions
+
+PDF Smart Editor is built with **FastAPI** and **React 18**. We welcome contributors!
+
+1.  **Clone**: `git clone https://github.com/OthmaneBlial/pdfsmarteditor.git`
+2.  **Install**: `pip install -e ".[dev]"`
+3.  **Test**: `pytest`
+
+Refer to [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+
+---
+
+**Copyright (c) 2024-2025 Othmane BLIAL**  
+Licensed under the MIT License.

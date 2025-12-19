@@ -47,9 +47,7 @@ def test_merge_documents(api_client, sample_pdf, multi_page_pdf):
 
 
 def test_split_pdf(api_client, multi_page_pdf):
-    files, handles = _prepare_files(
-        [("file", multi_page_pdf, "application/pdf")]
-    )
+    files, handles = _prepare_files([("file", multi_page_pdf, "application/pdf")])
     try:
         response = api_client.post(
             "/api/tools/split",
@@ -63,9 +61,7 @@ def test_split_pdf(api_client, multi_page_pdf):
 
 
 def test_compress_pdf(api_client, sample_pdf):
-    files, handles = _prepare_files(
-        [("file", sample_pdf, "application/pdf")]
-    )
+    files, handles = _prepare_files([("file", sample_pdf, "application/pdf")])
     try:
         response = api_client.post(
             "/api/tools/compress",
@@ -78,21 +74,25 @@ def test_compress_pdf(api_client, sample_pdf):
 
 
 def test_pdf_to_word_and_back(api_client, sample_pdf, sample_docx):
-    files, handles = _prepare_files(
-        [("file", sample_pdf, "application/pdf")]
-    )
+    files, handles = _prepare_files([("file", sample_pdf, "application/pdf")])
     try:
         response = api_client.post("/api/tools/pdf-to-word", files=files)
         assert response.status_code == 200
         assert response.headers["content-type"] in [
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "application/msword"
+            "application/msword",
         ]
     finally:
         _close_handles(handles)
 
     files, handles = _prepare_files(
-        [("file", sample_docx, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")]
+        [
+            (
+                "file",
+                sample_docx,
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            )
+        ]
     )
     try:
         response = api_client.post("/api/tools/word-to-pdf", files=files)
@@ -102,18 +102,14 @@ def test_pdf_to_word_and_back(api_client, sample_pdf, sample_docx):
 
 
 def test_img_and_html_conversions(api_client, sample_image, sample_html):
-    files, handles = _prepare_files(
-        [("file", sample_image, "image/png")]
-    )
+    files, handles = _prepare_files([("file", sample_image, "image/png")])
     try:
         response = api_client.post("/api/tools/img-to-pdf", files=files)
         _assert_pdf_response(response)
     finally:
         _close_handles(handles)
 
-    files, handles = _prepare_files(
-        [("file", sample_html, "text/html")]
-    )
+    files, handles = _prepare_files([("file", sample_html, "text/html")])
     try:
         response = api_client.post("/api/tools/html-to-pdf", files=files)
         _assert_pdf_response(response)
@@ -122,9 +118,7 @@ def test_img_and_html_conversions(api_client, sample_image, sample_html):
 
 
 def test_watermark_and_rotate(api_client, sample_pdf):
-    files, handles = _prepare_files(
-        [("file", sample_pdf, "application/pdf")]
-    )
+    files, handles = _prepare_files([("file", sample_pdf, "application/pdf")])
     try:
         response = api_client.post(
             "/api/tools/watermark",
@@ -141,9 +135,7 @@ def test_watermark_and_rotate(api_client, sample_pdf):
     finally:
         _close_handles(handles)
 
-    files, handles = _prepare_files(
-        [("file", sample_pdf, "application/pdf")]
-    )
+    files, handles = _prepare_files([("file", sample_pdf, "application/pdf")])
     try:
         response = api_client.post(
             "/api/tools/rotate",
@@ -206,7 +198,10 @@ def test_pdf_to_excel(api_client, sample_pdf):
     try:
         response = api_client.post("/api/tools/pdf-to-excel", files=files)
         assert response.status_code == 200
-        assert response.headers["content-type"] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        assert (
+            response.headers["content-type"]
+            == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
     finally:
         _close_handles(handles)
 
@@ -216,7 +211,10 @@ def test_pdf_to_ppt(api_client, sample_pdf):
     try:
         response = api_client.post("/api/tools/pdf-to-ppt", files=files)
         assert response.status_code == 200
-        assert response.headers["content-type"] == "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        assert (
+            response.headers["content-type"]
+            == "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        )
     finally:
         _close_handles(handles)
 
@@ -245,7 +243,15 @@ def test_pdf_to_pdfa(api_client, sample_pdf):
 
 def test_office_to_pdf(api_client, sample_excel, sample_pptx):
     # Excel to PDF
-    files, handles = _prepare_files([("file", sample_excel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")])
+    files, handles = _prepare_files(
+        [
+            (
+                "file",
+                sample_excel,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+        ]
+    )
     try:
         response = api_client.post("/api/tools/excel-to-pdf", files=files)
         _assert_pdf_response(response)
@@ -253,7 +259,15 @@ def test_office_to_pdf(api_client, sample_excel, sample_pptx):
         _close_handles(handles)
 
     # PPT to PDF
-    files, handles = _prepare_files([("file", sample_pptx, "application/vnd.openxmlformats-officedocument.presentationml.presentation")])
+    files, handles = _prepare_files(
+        [
+            (
+                "file",
+                sample_pptx,
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            )
+        ]
+    )
     try:
         response = api_client.post("/api/tools/ppt-to-pdf", files=files)
         _assert_pdf_response(response)

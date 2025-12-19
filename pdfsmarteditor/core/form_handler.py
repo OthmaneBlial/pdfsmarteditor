@@ -1,5 +1,7 @@
 import fitz
+
 from .exceptions import InvalidOperationError
+
 
 class FormHandler:
     def __init__(self, document):
@@ -15,13 +17,20 @@ class FormHandler:
         fields = []
         for page_num, page in enumerate(self.document):
             for widget in page.widgets():
-                fields.append({
-                    "page": page_num,
-                    "name": widget.field_name,
-                    "value": widget.field_value,
-                    "type": widget.field_type_string,
-                    "rect": [widget.rect.x0, widget.rect.y0, widget.rect.x1, widget.rect.y1]
-                })
+                fields.append(
+                    {
+                        "page": page_num,
+                        "name": widget.field_name,
+                        "value": widget.field_value,
+                        "type": widget.field_type_string,
+                        "rect": [
+                            widget.rect.x0,
+                            widget.rect.y0,
+                            widget.rect.x1,
+                            widget.rect.y1,
+                        ],
+                    }
+                )
         return fields
 
     def fill_form_field(self, field_name: str, value: str):
@@ -35,7 +44,7 @@ class FormHandler:
                     widget.field_value = value
                     widget.update()
                     found = True
-        
+
         if not found:
             raise InvalidOperationError(f"Field '{field_name}' not found")
 
@@ -45,8 +54,8 @@ class FormHandler:
         """
         for page in self.document:
             for widget in page.widgets():
-                # This is a simplification; PyMuPDF doesn't have a direct "flatten" for widgets 
-                # in the same way some other libs do, but we can try to make them read-only or 
+                # This is a simplification; PyMuPDF doesn't have a direct "flatten" for widgets
+                # in the same way some other libs do, but we can try to make them read-only or
                 # just leave them as is if 'flatten' implies making them non-editable.
                 # A true flatten often involves drawing the appearance stream to the page and removing the widget.
                 # For now, let's just make them read-only.

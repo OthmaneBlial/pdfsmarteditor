@@ -1,5 +1,7 @@
 import fitz
+
 from .exceptions import InvalidOperationError
+
 
 class MetadataEditor:
     def __init__(self, document):
@@ -25,7 +27,7 @@ class MetadataEditor:
         """Remove a specific metadata key."""
         current = self.read_metadata()
         if key in current:
-            current[key] = None # Or ""
+            current[key] = None  # Or ""
             self.write_metadata(current)
 
     def clear_all_metadata(self):

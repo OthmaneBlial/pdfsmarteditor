@@ -1,5 +1,7 @@
 import fitz
+
 from .exceptions import InvalidOperationError
+
 
 class ObjectInspector:
     def __init__(self, document):
@@ -44,11 +46,13 @@ class ObjectInspector:
         """
         tree = {}
         page_count = self.get_page_count()
-        pages_to_check = range(min(max_pages, page_count)) if max_pages else range(page_count)
+        pages_to_check = (
+            range(min(max_pages, page_count)) if max_pages else range(page_count)
+        )
         for i in pages_to_check:
             tree[f"page_{i}"] = {
                 "text_blocks": len(self.get_text_blocks(i)),
                 "images": len(self.get_images(i)),
-                "annotations": len(self.get_annotations(i))
+                "annotations": len(self.get_annotations(i)),
             }
         return tree

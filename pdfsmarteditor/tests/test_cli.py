@@ -1,8 +1,10 @@
+import os
+import tempfile
+
 import pytest
 from typer.testing import CliRunner
+
 from pdfsmarteditor.cli.main import app
-import tempfile
-import os
 
 
 class TestCLI:
@@ -21,24 +23,42 @@ class TestCLI:
 
     def test_extract_images(self, runner, sample_pdf_path):
         with tempfile.TemporaryDirectory() as tmpdir:
-            result = runner.invoke(app, ["extract", "images", sample_pdf_path, "--output-dir", tmpdir])
+            result = runner.invoke(
+                app, ["extract", "images", sample_pdf_path, "--output-dir", tmpdir]
+            )
             assert result.exit_code == 0
             assert "Images extracted" in result.output
 
     def test_edit_metadata(self, runner, sample_pdf_path):
-        with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp:
-            result = runner.invoke(app, ["edit", "metadata", sample_pdf_path, "title", "Test Title", "--output", tmp.name])
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+            result = runner.invoke(
+                app,
+                [
+                    "edit",
+                    "metadata",
+                    sample_pdf_path,
+                    "title",
+                    "Test Title",
+                    "--output",
+                    tmp.name,
+                ],
+            )
             assert result.exit_code == 0
             assert "Metadata updated" in result.output
             os.unlink(tmp.name)
 
     def test_edit_metadata_invalid_file(self, runner):
-        result = runner.invoke(app, ["edit", "metadata", "nonexistent.pdf", "title", "Test"])
+        result = runner.invoke(
+            app, ["edit", "metadata", "nonexistent.pdf", "title", "Test"]
+        )
         assert result.exit_code == 1
 
     def test_delete_page(self, runner, multi_page_pdf_path):
-        with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp:
-            result = runner.invoke(app, ["edit", "delete-page", multi_page_pdf_path, "1", "--output", tmp.name])
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+            result = runner.invoke(
+                app,
+                ["edit", "delete-page", multi_page_pdf_path, "1", "--output", tmp.name],
+            )
             assert result.exit_code == 0
             assert "Page 1 deleted" in result.output
             os.unlink(tmp.name)
@@ -59,20 +79,42 @@ class TestCLI:
         assert "Error:" in result.output
 
     def test_add_image(self, runner, sample_pdf_path, sample_image_path):
-        with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp:
-            result = runner.invoke(app, [
-                "add", "image", sample_pdf_path, sample_image_path,
-                "0", "100", "100", "50", "50", "--output", tmp.name
-            ])
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+            result = runner.invoke(
+                app,
+                [
+                    "add",
+                    "image",
+                    sample_pdf_path,
+                    sample_image_path,
+                    "0",
+                    "100",
+                    "100",
+                    "50",
+                    "50",
+                    "--output",
+                    tmp.name,
+                ],
+            )
             assert result.exit_code == 0
             assert "Image added" in result.output
             os.unlink(tmp.name)
 
     def test_add_image_invalid_page(self, runner, sample_pdf_path, sample_image_path):
-        result = runner.invoke(app, [
-            "add", "image", sample_pdf_path, sample_image_path,
-            "10", "100", "100", "50", "50"
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "add",
+                "image",
+                sample_pdf_path,
+                sample_image_path,
+                "10",
+                "100",
+                "100",
+                "50",
+                "50",
+            ],
+        )
         assert result.exit_code == 1
         assert "Error:" in result.output
 

@@ -1,5 +1,6 @@
-import fitz
 from typing import Tuple
+
+import fitz
 
 
 def get_pdf_version(file_path: str) -> str:
@@ -13,7 +14,7 @@ def get_pdf_version(file_path: str) -> str:
         str: PDF version string.
     """
     with fitz.open(file_path) as doc:
-        return doc.metadata['format']
+        return doc.metadata["format"]
 
 
 def get_page_count(file_path: str) -> int:

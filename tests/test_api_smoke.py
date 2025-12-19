@@ -75,13 +75,17 @@ def test_metadata_update(api_client, sample_pdf: str):
 def test_page_operations(api_client, multi_page_pdf: str):
     doc_id = upload_pdf(api_client, multi_page_pdf)
 
-    initial = api_client.get(f"/api/documents/{doc_id}/pages").json()["data"]["page_count"]
+    initial = api_client.get(f"/api/documents/{doc_id}/pages").json()["data"][
+        "page_count"
+    ]
     assert initial == 3
 
     response = api_client.delete(f"/api/documents/{doc_id}/pages/2")
     assert response.status_code == 200
 
-    after_delete = api_client.get(f"/api/documents/{doc_id}/pages").json()["data"]["page_count"]
+    after_delete = api_client.get(f"/api/documents/{doc_id}/pages").json()["data"][
+        "page_count"
+    ]
     assert after_delete == 2
 
     rotate_response = api_client.put(f"/api/documents/{doc_id}/pages/0/rotate/90")

@@ -36,7 +36,8 @@ dependencies = [
     "pandas",
     "openpyxl",
     "pytesseract",
-    "python-dotenv"
+    "python-dotenv",
+    "typing_extensions"
 ]
 
 [project.optional-dependencies]
@@ -56,3 +57,6 @@ pdfsmarteditor = "pdfsmarteditor.cli.main:app"
 
 [tool.setuptools.packages.find]
 include = ["pdfsmarteditor*"]
+
+[tool.isort]
+profile = "black"

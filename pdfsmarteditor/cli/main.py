@@ -1,11 +1,12 @@
-import typer
 import fitz
+import typer
+
 from ..core.document_manager import DocumentManager
-from ..core.object_inspector import ObjectInspector
-from ..core.metadata_editor import MetadataEditor
-from ..core.page_manipulator import PageManipulator
 from ..core.editor import Editor
-from ..core.exceptions import PDFLoadError, PDFSaveError, InvalidOperationError
+from ..core.exceptions import InvalidOperationError, PDFLoadError, PDFSaveError
+from ..core.metadata_editor import MetadataEditor
+from ..core.object_inspector import ObjectInspector
+from ..core.page_manipulator import PageManipulator
 
 app = typer.Typer()
 
@@ -13,10 +14,11 @@ app = typer.Typer()
 extract_app = typer.Typer()
 app.add_typer(extract_app, name="extract")
 
+
 @extract_app.command("text")
 def extract_text(
     file: str = typer.Argument(..., help="PDF file path"),
-    max_pages: int = typer.Option(None, help="Maximum pages to process for large PDFs")
+    max_pages: int = typer.Option(None, help="Maximum pages to process for large PDFs"),
 ):
     """Extract text from PDF"""
     try:
@@ -29,14 +31,16 @@ def extract_text(
         inspector = ObjectInspector(doc)
         text = ""
         page_count = inspector.get_page_count()
-        pages_to_process = range(min(max_pages, page_count)) if max_pages else range(page_count)
+        pages_to_process = (
+            range(min(max_pages, page_count)) if max_pages else range(page_count)
+        )
         for i in pages_to_process:
             blocks = inspector.get_text_blocks(i)
             for block in blocks:
-                if block['type'] == 0:  # text block
-                    for line in block['lines']:
-                        for span in line['spans']:
-                            text += span['text'] + " "
+                if block["type"] == 0:  # text block
+                    for line in block["lines"]:
+                        for span in line["spans"]:
+                            text += span["text"] + " "
                     text += "\n"
         print(text)
         dm.close_document()
@@ -44,15 +48,17 @@ def extract_text(
         typer.echo(f"Error: {e}", err=True)
         raise typer.Exit(1)
 
+
 @extract_app.command("images")
 def extract_images(
     file: str = typer.Argument(..., help="PDF file path"),
     output_dir: str = typer.Option("./images", help="Output directory for images"),
-    max_pages: int = typer.Option(None, help="Maximum pages to process for large PDFs")
+    max_pages: int = typer.Option(None, help="Maximum pages to process for large PDFs"),
 ):
     """Extract images from PDF"""
     try:
         import os
+
         os.makedirs(output_dir, exist_ok=True)
         dm = DocumentManager()
         if not dm.check_compatibility(file):
@@ -62,7 +68,9 @@ def extract_images(
         doc = dm.get_document()
         inspector = ObjectInspector(doc)
         page_count = inspector.get_page_count()
-        pages_to_process = range(min(max_pages, page_count)) if max_pages else range(page_count)
+        pages_to_process = (
+            range(min(max_pages, page_count)) if max_pages else range(page_count)
+        )
         for page_num in pages_to_process:
             images = inspector.get_images(page_num)
             for img_index, img in enumerate(images):
@@ -75,16 +83,20 @@ def extract_images(
         typer.echo(f"Error: {e}", err=True)
         raise typer.Exit(1)
 
+
 # Edit subcommands
 edit_app = typer.Typer()
 app.add_typer(edit_app, name="edit")
+
 
 @edit_app.command("metadata")
 def edit_metadata(
     file: str = typer.Argument(..., help="PDF file path"),
     key: str = typer.Argument(..., help="Metadata key"),
     value: str = typer.Argument(..., help="Metadata value"),
-    output: str = typer.Option(None, help="Output file path (default: overwrite input)")
+    output: str = typer.Option(
+        None, help="Output file path (default: overwrite input)"
+    ),
 ):
     """Edit PDF metadata"""
     try:
@@ -104,11 +116,14 @@ def edit_metadata(
         typer.echo(f"Error: {e}", err=True)
         raise typer.Exit(1)
 
+
 @edit_app.command("delete-page")
 def delete_page(
     file: str = typer.Argument(..., help="PDF file path"),
     page_num: int = typer.Argument(..., help="Page number to delete (0-based)"),
-    output: str = typer.Option(None, help="Output file path (default: overwrite input)")
+    output: str = typer.Option(
+        None, help="Output file path (default: overwrite input)"
+    ),
 ):
     """Delete a page from PDF"""
     try:
@@ -125,9 +140,11 @@ def delete_page(
         typer.echo(f"Error: {e}", err=True)
         raise typer.Exit(1)
 
+
 # Inspect subcommands
 inspect_app = typer.Typer()
 app.add_typer(inspect_app, name="inspect")
+
 
 @inspect_app.command("object-tree")
 def inspect_object_tree(file: str = typer.Argument(..., help="PDF file path")):
@@ -139,15 +156,18 @@ def inspect_object_tree(file: str = typer.Argument(..., help="PDF file path")):
         inspector = ObjectInspector(doc)
         tree = inspector.inspect_object_tree()
         import json
+
         print(json.dumps(tree, indent=2))
         dm.close_document()
     except (PDFLoadError, InvalidOperationError) as e:
         typer.echo(f"Error: {e}", err=True)
         raise typer.Exit(1)
 
+
 # Add subcommands
 add_app = typer.Typer()
 app.add_typer(add_app, name="add")
+
 
 @add_app.command("image")
 def add_image(
@@ -158,7 +178,9 @@ def add_image(
     y: float = typer.Argument(..., help="Y position"),
     width: float = typer.Argument(..., help="Image width"),
     height: float = typer.Argument(..., help="Image height"),
-    output: str = typer.Option(None, help="Output file path (default: overwrite input)")
+    output: str = typer.Option(
+        None, help="Output file path (default: overwrite input)"
+    ),
 ):
     """Add image to PDF page"""
     try:
@@ -175,6 +197,7 @@ def add_image(
     except (PDFLoadError, PDFSaveError, InvalidOperationError) as e:
         typer.echo(f"Error: {e}", err=True)
         raise typer.Exit(1)
+
 
 # Note: Flatten functionality removed as PyMuPDF does not support document-level flattening
 

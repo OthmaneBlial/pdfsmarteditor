@@ -1,13 +1,19 @@
-import pytest
-import fitz
-import tempfile
 import os
+import tempfile
+
+import fitz
+import pytest
+
 from pdfsmarteditor.core.document_manager import DocumentManager
-from pdfsmarteditor.core.object_inspector import ObjectInspector
 from pdfsmarteditor.core.editor import Editor
+from pdfsmarteditor.core.exceptions import (
+    InvalidOperationError,
+    PDFLoadError,
+    PDFSaveError,
+)
 from pdfsmarteditor.core.metadata_editor import MetadataEditor
+from pdfsmarteditor.core.object_inspector import ObjectInspector
 from pdfsmarteditor.core.page_manipulator import PageManipulator
-from pdfsmarteditor.core.exceptions import PDFLoadError, PDFSaveError, InvalidOperationError
 
 
 class TestDocumentManager:
@@ -25,7 +31,7 @@ class TestDocumentManager:
     def test_save_pdf_success(self, sample_pdf_path):
         dm = DocumentManager()
         dm.load_pdf(sample_pdf_path)
-        with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp:
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
             dm.save_pdf(tmp.name)
             assert os.path.exists(tmp.name)
             os.unlink(tmp.name)
