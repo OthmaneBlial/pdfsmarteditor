@@ -5,6 +5,8 @@ echo "Running Black Check..."
 black --check .
 echo "Running Isort Check..."
 isort --check-only .
+echo "Running Mypy Check..."
+python -m mypy pdfsmarteditor
 
 echo "Running Tests..."
 # Add current directory to PYTHONPATH so that 'api' and 'pdfsmarteditor' modules can be found

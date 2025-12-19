@@ -1,6 +1,6 @@
 import os
 import shutil
-from typing import List
+from typing import List, Optional
 
 import fitz
 
@@ -154,7 +154,7 @@ class PDFManipulator:
         file_path: str,
         output_path: str,
         rotation: int = 90,
-        page_nums: List[int] = None,
+        page_nums: Optional[List[int]] = None,
     ):
         """
         Rotate PDF pages.
@@ -164,9 +164,11 @@ class PDFManipulator:
         doc = fitz.open(file_path)
 
         if page_nums is None:
-            page_nums = range(len(doc))
+            pages_to_rotate = list(range(len(doc)))
+        else:
+            pages_to_rotate = page_nums
 
-        for page_num in page_nums:
+        for page_num in pages_to_rotate:
             if 0 <= page_num < len(doc):
                 page = doc[page_num]
                 page.set_rotation(page.rotation + rotation)
@@ -325,6 +327,7 @@ class PDFManipulator:
 
         for i in range(max_pages):
             # Get page 1 image
+            img1: Image.Image
             if i < len(doc1):
                 pix1 = doc1[i].get_pixmap()
                 img1 = Image.open(io.BytesIO(pix1.tobytes("png")))
@@ -333,6 +336,7 @@ class PDFManipulator:
                 img1 = Image.new("RGB", (595, 842), "white")  # A4 approx
 
             # Get page 2 image
+            img2: Image.Image
             if i < len(doc2):
                 pix2 = doc2[i].get_pixmap()
                 img2 = Image.open(io.BytesIO(pix2.tobytes("png")))

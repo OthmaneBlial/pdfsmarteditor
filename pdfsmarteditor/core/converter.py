@@ -386,7 +386,7 @@ class PDFConverter:
             if enhance:
                 # Enhance image using Pillow
                 try:
-                    img = Image.open(img_path)
+                    img: Image.Image = Image.open(img_path)
                     # Convert to grayscale
                     img = img.convert("L")
                     # Increase contrast

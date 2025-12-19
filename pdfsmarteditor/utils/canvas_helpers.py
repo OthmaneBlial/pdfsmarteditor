@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import fitz
 from PIL import Image
 
-from .types import Point, Rectangle
+from .pdf_types import Point, Rectangle
 
 
 def parse_canvas_json(canvas_data: Any) -> List[Dict[str, Any]]:
@@ -178,7 +178,7 @@ def _convert_freedraw_to_ink(
 
     # Convert path segments to ink strokes
     strokes = []
-    current_stroke = []
+    current_stroke: List[Tuple[float, float]] = []
 
     for segment in path:
         if isinstance(segment, list) and len(segment) >= 3:
